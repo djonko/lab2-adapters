@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        ">
+
+	<!-- initialize triangle and circle name -->
+	<bean name="triangle" class="sprint.aop.javabrains.model.Triangle">
+		<property name="name" value="Triangle name" /> 
+	</bean>
+	
+	<bean name="circle" class="sprint.aop.javabrains.model.Circle">
+		<property name="name" value="Circle name" /> 
+	</bean>
+	
+	<bean name="shapeService" class="sprint.aop.javabrains.service.ShapeService" autowire="byName">
+		
+	</bean>
+	
+	<!-- tell spring we have Aspect programming annotation place -->
+	<aop:aspectj-autoproxy />
+	
+	<bean name="loggingAspect"  class="sprint.aop.javabrains.aspect.LoggingAspect"/>
+	
+
+</beans>
