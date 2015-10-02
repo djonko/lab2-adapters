@@ -1,6 +1,10 @@
 package sprint.aop.javabrains.aspect;
 
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -32,9 +36,16 @@ public class LoggingAspect {
 	}
 	
 	// all methods take string arguments
-	@Before("args(name)")
-	public void allMethodStringArg(String name){
+	@AfterThrowing(pointcut="args(name)", throwing="ex")
+	public void allMethodStringArg(String name,Exception ex){
 		System.out.println("A method with String arguments has called ="+name);
+		System.out.println("Exception was  ="+ex);
+	}
+	
+	
+	@AfterReturning(pointcut="args(name)",returning="returnStrigValue")
+	public void allMethodStringArg2(String name,String returnStrigValue){
+		System.out.println("A method with String arguments has called and the return ="+returnStrigValue);
 	}
 	
 	/**
@@ -46,6 +57,20 @@ public class LoggingAspect {
 		System.out.println("Advice run. all methode in Circle");
 	}
 	
+	@Around("@annotation(sprint.aop.javabrains.aspect.Loggable)")
+	public Object aroundAdvice(ProceedingJoinPoint proceedingJoinPoint){
+		Object ob=null;
+		System.out.println("start around methode "+proceedingJoinPoint.toString());
+		
+		try {
+			 ob=proceedingJoinPoint.proceed();
+			 System.out.println("end around methode "+proceedingJoinPoint.toString());
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			System.out.println("after throwing around methode "+proceedingJoinPoint.toString());
+		}
+		return ob;
+	}
 /*	@Before("allGetters()")
 	public void LoggingAdvice2(){
 		System.out.println("Advice run. Get Method called 2");
